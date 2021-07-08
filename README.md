@@ -1,39 +1,40 @@
 # Introduction
-“vvdec-0.2 for ARM_Neon” is a SIMD Neon-based VVC decoder implementation. It is an ARM-based configured version of Fraunhofer Versatile Video Decoder (VVdeC) version 0.2.0.0. VVdec has been configured for a heterogeneous NVIDIA Xavier System on Chip embedded platform based on ARM + GPUs. Here, VVdeC has also been configured for CUDA compatibility with GPUs. Moreover, SIMD Neon-based optimization has been performed by adapting the original SIMD instructions with the Neon intrinsics for ARM processors over the embedded platform.
+“VVdeC2_ARM_Neon” is a SIMD Neon-based VVC decoder implementation. It is an ARM-based configured version of Fraunhofer Versatile Video Decoder (VVdeC) version 0.2.0.0. VVdec has been configured for a heterogeneous NVIDIA Xavier System on Chip embedded platform based on ARM + GPUs. Here, VVdeC has also been configured for CUDA compatibility with GPUs. Moreover, SIMD Neon-based optimization has been performed by adapting the original SIMD instructions with the Neon intrinsics for ARM processors over the embedded platform.
  
 # Hardware
 The following architectures are supported:
-Aarch64
-ARMv8
-ARMv7
+- Aarch64
+- ARMv8
+- ARMv7
 
 # How to build?
 Cmake is used to build the software over Linux (gcc). 
 
-Create a build directory in the root directory:
+_Create a build directory in the root directory:_
 ```sh
 mkdir build
 ```
+_Change to build directory:_
 
 ```sh
 cd build
 ```
 
-Therefore, use one of the following cmake commands that suited to you. 
-Linux Release Makefile sample:
+_Therefore, use one of the following cmake commands that suited to you. 
+Linux Release Makefile sample:_
 
 ```sh
 cmake .. -DCMAKE_BUILD_TYPE=Release
 ```
 
-Linux Debug Makefile sample:
+_Linux Debug Makefile sample:_
 
 ```sh
 cmake .. -DCMAKE_BUILD_TYPE=Debug
 ```
 
  
-Then build using plain make
+_Then build using plain make_
 ```sh
 make
 ```
