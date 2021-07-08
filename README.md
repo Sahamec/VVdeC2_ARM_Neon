@@ -42,8 +42,8 @@ make
 # Adoptions
 The following open source projects have been adopted during the development of vvdec 0.2.0.0 for ARM_Neon. 
 
-Vvdec-0.2.0.0 : https://github.com/fraunhoferhhi/vvdec/releases/tag/v0.2.0.0 -provides a fast VVC x86 software decoder implementation.
-simde: https://github.com/simd-everywhere/simde -provides fast, portable implementations of SIMD intrinsics SSE functions on ARM.
-sse2neon: https://github.com/DLTcollab/sse2neon -provides translation of Intel SSE (Streaming SIMD Extensions) intrinsics to Arm NEON.
+- Vvdec-0.2.0.0 : https://github.com/fraunhoferhhi/vvdec/releases/tag/v0.2.0.0 -provides a fast VVC x86 software decoder implementation.
+- SIMD Everywhere simde: https://github.com/simd-everywhere/simde -provides fast, portable implementations of SIMD intrinsics SSE functions on ARM.
+- sse2neon: https://github.com/DLTcollab/sse2neon -provides translation of Intel SSE (Streaming SIMD Extensions) intrinsics to Arm NEON.
 
 
