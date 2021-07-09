@@ -13,6 +13,9 @@ file( GLOB BASE_SRC_FILES "*.cpp"  "../CommonLib/*.cpp"  "../Utilities/*.cpp" ".
 # get include files
 file( GLOB BASE_INC_FILES "*.h" "../CommonLib/*.h"  "../Utilities/*.h" "../DecoderLib/*.h" )
 
+# get CUDA files //SA
+file( GLOB BASE_CUDA_FILES "*.cu"  "../CommonLib/*.cu"  "../Utilities/*.cu" "../DecoderLib/*.cu")
+
 # get x86 source files
 file( GLOB X86_SRC_FILES "../CommonLib/x86/*.cpp" )
 
@@ -41,7 +44,7 @@ file( GLOB MD5_INC_FILES "../libmd5/*.h" )
 file( GLOB PUBLIC_INC_FILES  "../../../include/${LIB_NAME}/*.h" )
 
 # get all source files
-set( SRC_FILES ${BASE_SRC_FILES} ${X86_SRC_FILES} ${SSE41_SRC_FILES} ${SSE42_SRC_FILES} ${AVX_SRC_FILES} ${AVX2_SRC_FILES} ${MD5_SRC_FILES} )
+set( SRC_FILES ${BASE_SRC_FILES} ${BASE_CUDA_FILES} ${X86_SRC_FILES} ${SSE41_SRC_FILES} ${SSE42_SRC_FILES} ${AVX_SRC_FILES} ${AVX2_SRC_FILES} ${MD5_SRC_FILES} )  
 
 # get all include files
 file( GLOB PRIVATE_INC_FILES ${BASE_INC_FILES} ${X86_INC_FILES} ${MD5_INC_FILES}  )
@@ -85,8 +88,8 @@ add_library( ${LIB_NAME} ${SRC_FILES} ${INC_FILES} ${NATVIS_FILES} ${RESOURCE_FI
 target_compile_definitions( ${LIB_NAME} PRIVATE ${LIB_NAME_UC}_SOURCE )
 target_compile_definitions( ${LIB_NAME} PUBLIC $<$<AND:$<PLATFORM_ID:Windows>,$<STREQUAL:$<TARGET_PROPERTY:${LIB_NAME},TYPE>,SHARED_LIBRARY>>:${LIB_NAME_UC}_DYN_LINK> )
 
-target_compile_options( ${LIB_NAME} PRIVATE $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Wall -Werror -Wno-unused-function -Wno-enum-compare-switch -Wno-unknown-attributes>
-                                            $<$<CXX_COMPILER_ID:GNU>:-Wall -Werror -Wno-unused-function -Wno-sign-compare -fdiagnostics-show-option>
+target_compile_options( ${LIB_NAME} PRIVATE $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>: >
+                                            $<$<CXX_COMPILER_ID:GNU>: >
                                             $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX /wd4100 /wd4127 /wd4244 /wd4245 /wd4389 /wd4456 /wd4457 /wd4458 /wd4459 /wd4505 /wd4701 /wd4702 /wd4703 >)
 
 target_include_directories( ${LIB_NAME} PRIVATE           $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../../include> $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>                                        
@@ -97,6 +100,9 @@ target_link_libraries( ${LIB_NAME} ${OPENMP_LINK_TARGET} Threads::Threads )
 
 # set the folder where to place the projects
 set_target_properties( ${LIB_NAME} PROPERTIES FOLDER lib )
+
+
+
 
 
 
