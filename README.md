@@ -2,7 +2,7 @@
 “VVdeC2_ARM_Neon” is a SIMD Neon-based VVC decoder implementation. It is an ARM-based configured version of Fraunhofer Versatile Video Decoder (VVdeC) version 0.2.0.0. VVdec has been configured for a heterogeneous NVIDIA Xavier System on Chip embedded platform based on ARM + GPUs. Here, VVdeC has also been configured for CUDA compatibility with GPUs. Moreover, SIMD Neon-based optimization has been performed by adapting the original SIMD instructions with the Neon intrinsics for ARM processors over the embedded platform.
  
 # Hardware
-The following architectures are supported:
+The following architectures are tested:
 - Aarch64
 - ARMv8
 - NVIDIA GPU
