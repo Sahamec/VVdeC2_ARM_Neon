@@ -5,7 +5,8 @@
 The following architectures are supported:
 - Aarch64
 - ARMv8
-- ARMv7
+- ARMv7 
+- NVIDIA GPU
 
 # How to build?
 Cmake is used to build the software over Linux (gcc). 
@@ -46,4 +47,5 @@ The following open source projects have been adopted during the development of V
 - SIMD Everywhere simde: https://github.com/simd-everywhere/simde -provides fast, portable implementations of SIMD intrinsics SSE functions on ARM.
 - sse2neon: https://github.com/DLTcollab/sse2neon -provides translation of Intel SSE (Streaming SIMD Extensions) intrinsics to Arm NEON.
 
-
+# Notes
+VVdeC2_ARM_Neon is CUDA compatible. VVdeC2_ARM_Neon has been configured focusing on embedded platfrom with NVIDIA GPU. 
