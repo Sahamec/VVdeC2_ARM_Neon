@@ -1,9 +1,8 @@
 # Authors
 
-* Adam Wieckowski, @adamjw24, Fraunhofer HHI
-* Gabriel Hege, , Fraunhofer HHI
-* Christian Bartnik, , Fraunhofer HHI
-* Christian Stoffers, , Fraunhofer HHI
-* Christian Lehmann, , Fraunhofer HHI
-* Valeri George, , Fraunhofer HHI
-* Jens Güther, , Fraunhofer HHI
+* Anup Saha
+* Miguel Chavarrías
+* Víctor Aranda
+* Matías J. Garrido
+* Fernando Pescador
+* Kheyter Chassaigne
