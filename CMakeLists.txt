@@ -13,9 +13,9 @@ endif()
 project( vvdec VERSION 0.2.0.0 )
 
 # enable CUDA
-  #find_package(CUDA REQUIRED)
-  #SET(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)
-  #enable_language(CUDA)
+  find_package(CUDA REQUIRED)
+  SET(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)
+  enable_language(CUDA)
 
 if( NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR )
   # enable sse4.1 build for all source files for gcc and clang
