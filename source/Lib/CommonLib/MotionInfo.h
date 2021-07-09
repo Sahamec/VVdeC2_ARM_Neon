@@ -1,0 +1,231 @@
+/* -----------------------------------------------------------------------------
+The copyright in this software is being made available under the BSD
+License, included below. No patent rights, trademark rights and/or 
+other Intellectual Property Rights other than the copyrights concerning 
+the Software are granted under this license.
+
+For any license concerning other Intellectual Property rights than the software, 
+especially patent licenses, a separate Agreement needs to be closed. 
+For more information please contact:
+
+Fraunhofer Heinrich Hertz Institute
+Einsteinufer 37
+10587 Berlin, Germany
+www.hhi.fraunhofer.de/vvc
+vvc@hhi.fraunhofer.de
+
+Copyright (c) 2018-2020, Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. 
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+ * Neither the name of Fraunhofer nor the names of its contributors may
+   be used to endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS
+BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.
+
+
+------------------------------------------------------------------------------------------- */
+
+/** \file     MotionInfo.h
+    \brief    motion information handling classes (header)
+    \todo     MvField seems to be better to be inherited from Mv
+*/
+
+#ifndef __MOTIONINFO__
+#define __MOTIONINFO__
+
+#include "CommonDef.h"
+#include "Mv.h"
+
+//! \ingroup CommonLib
+//! \{
+
+// ====================================================================================================================
+// Type definition
+// ====================================================================================================================
+
+/// parameters for AMVP
+struct AMVPInfo
+{
+  Mv       mvCand[ AMVP_MAX_NUM_CANDS_MEM ];  ///< array of motion vector predictor candidates
+  unsigned numCand;                       ///< number of motion vector predictor candidates
+};
+
+struct AffineAMVPInfo
+{
+  Mv       mvCandLT[ AMVP_MAX_NUM_CANDS_MEM ];  ///< array of affine motion vector predictor candidates for left-top corner
+  Mv       mvCandRT[ AMVP_MAX_NUM_CANDS_MEM ];  ///< array of affine motion vector predictor candidates for right-top corner
+  Mv       mvCandLB[ AMVP_MAX_NUM_CANDS_MEM ];  ///< array of affine motion vector predictor candidates for left-bottom corner
+  unsigned numCand;                       ///< number of motion vector predictor candidates
+};
+
+// ====================================================================================================================
+// Class definition
+// ====================================================================================================================
+
+/// class for motion vector with reference index
+struct MvField
+{
+  Mv     mv;
+  int8_t refIdx = NOT_VALID;
+
+  MvField() = default;
+  MvField( Mv const & cMv, const int iRefIdx ) : mv( cMv ), refIdx(   iRefIdx ) {}
+
+  void setMvField( Mv const & cMv, const int iRefIdx )
+  {
+    CHECKD( iRefIdx == -1 && cMv != Mv(0,0), "Must not happen." );
+    mv     = cMv;
+    refIdx = iRefIdx;
+  }
+
+  bool operator==( const MvField& other ) const
+  {
+    CHECKD( refIdx == -1 && mv != Mv(0,0), "Error in operator== of MvField." );
+    CHECKD( other.refIdx == -1 && other.mv != Mv(0,0), "Error in operator== of MvField." );
+    return refIdx == other.refIdx && mv == other.mv;
+  }
+  bool operator!=( const MvField& other ) const
+  {
+    CHECKD( refIdx == -1 && mv != Mv(0,0), "Error in operator!= of MvField." );
+    CHECKD( other.refIdx == -1 && other.mv != Mv(0,0), "Error in operator!= of MvField." );
+    return refIdx != other.refIdx || mv != other.mv;
+  }
+};
+
+struct MotionInfo
+{
+  Mv       mv    [NUM_REF_PIC_LIST_01];
+  int8_t   refIdx[NUM_REF_PIC_LIST_01] = { NOT_VALID, NOT_VALID };
+
+  uint16_t sliceIdx = 0;
+  bool     isInter  = false;
+  char     interDir = 0;
+
+  bool operator==( const MotionInfo& mi ) const
+  {
+    if( isInter  != mi.isInter  ) return false;
+
+    if( sliceIdx != mi.sliceIdx ) return false;
+    if( interDir != mi.interDir ) return false;
+
+    if( interDir != 2 )
+    {
+      if( refIdx[0] != mi.refIdx[0] ) return false;
+      if( mv[0]     != mi.mv[0]     ) return false;
+    }
+
+    if( interDir != 1 )
+    {
+      if( refIdx[1] != mi.refIdx[1] ) return false;
+      if( mv[1]     != mi.mv[1]     ) return false;
+    }
+
+    return true;
+  }
+
+  bool operator!=( const MotionInfo& mi ) const
+  {
+    return !( *this == mi );
+  }
+};
+
+struct HPMVInfo
+{
+  Mv       mv    [NUM_REF_PIC_LIST_01];
+  int8_t   refIdx[NUM_REF_PIC_LIST_01] = { NOT_VALID, NOT_VALID };
+
+  char     interDir = 0;
+  uint8_t  BcwIdx   = 0;
+  bool     useAltHpelIf = false;
+
+  HPMVInfo() = default;
+  HPMVInfo( const MotionInfo& mi, uint8_t BcwIdx, bool useAltHpelIf )
+  {
+    mv[0] = mi.mv[0];
+    mv[1] = mi.mv[1];
+
+    refIdx[0] = mi.refIdx[0];
+    refIdx[1] = mi.refIdx[1];
+
+    interDir = mi.interDir;
+
+    this->BcwIdx       = BcwIdx;
+    this->useAltHpelIf = useAltHpelIf;
+  }
+
+  bool operator==( const HPMVInfo& mi ) const
+  {
+    if( interDir != mi.interDir ) return false;
+
+    if( interDir != 2 )
+    {
+      if( refIdx[0] != mi.refIdx[0] ) return false;
+      if( mv[0]     != mi.mv[0]     ) return false;
+    }
+
+    if( interDir != 1 )
+    {
+      if( refIdx[1] != mi.refIdx[1] ) return false;
+      if( mv[1]     != mi.mv[1]     ) return false;
+    }
+
+    return true;
+  }
+
+  bool operator!=( const HPMVInfo& mi ) const
+  {
+    return !( *this == mi );
+  }
+};
+
+struct MotionHist
+{
+  static_vector<HPMVInfo, MAX_NUM_HMVP_CANDS> motionLut;
+  static_vector<HPMVInfo, MAX_NUM_HMVP_CANDS> motionLutIbc;
+  
+  static void addMiToLut( static_vector<HPMVInfo, MAX_NUM_HMVP_CANDS>& lut, const HPMVInfo &mi )
+  {
+    size_t currCnt = lut.size();
+
+    bool pruned      = false;
+    int  sameCandIdx = 0;
+
+    for( int idx = 0; idx < currCnt; idx++ )
+    {
+      if( lut[idx] == mi )
+      {
+        sameCandIdx = idx;
+        pruned = true;
+        break;
+      }
+    }
+
+    if( pruned || currCnt == lut.capacity() )
+    {
+      lut.erase( lut.begin() + sameCandIdx );
+    }
+
+    lut.push_back( mi );
+  }
+};
+
+#endif // __MOTIONINFO__
