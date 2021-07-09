@@ -12,10 +12,23 @@ endif()
 # project name
 project( vvdec VERSION 0.2.0.0 )
 
+# enable CUDA
+  #find_package(CUDA REQUIRED)
+  #SET(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)
+  #enable_language(CUDA)
+
 if( NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR )
   # enable sse4.1 build for all source files for gcc and clang
   if( UNIX OR MINGW )
     #add_compile_options( "-msse4.1" )
+    
+  # enable gcc auto vectorizer -ftree  
+    #add_compile_options( "-ftree-vectorize" )
+    #add_compile_options( "-ftree-vectorizer-verbose=2" )
+  
+  # enable print vectorized functions
+    #add_compile_options( "-fopt-info-vec-optimized" )  
+   
   endif()
   
   # set exception handling
@@ -113,6 +126,16 @@ endif()
 set( CMAKE_CXX_STANDARD 14 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 
+# enable auto vectorizer option
+ #set(CMAKE_CXX_FLAGS_RELEASE "-O1 -DNDEBUG")
+ #set(CMAKE_C_FLAGS_RELEASE "-O1 -DNDEBUG")
+ #set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+ #set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
+ #set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -DNDEBUG")
+ #set(CMAKE_C_FLAGS_RELEASE "-Ofast -DNDEBUG")
+ #set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
+ #set(CMAKE_C_FLAGS_RELEASE "-Os -DNDEBUG")
+
 # compile everything position independent (even static libraries)
 set( CMAKE_POSITION_INDEPENDENT_CODE TRUE )
 
@@ -131,6 +154,14 @@ find_package( Threads REQUIRED )
 # enable sse4.1 build for all source files for gcc and clang
 if( UNIX OR MINGW )
   #add_compile_options( "-msse4.1" )
+  
+  # enable gcc auto vectorizer -ftree  
+    #add_compile_options( "-ftree-vectorize" )
+    #add_compile_options( "-ftree-vectorizer-verbose=2" )
+  
+  # enable print vectorized function
+    #add_compile_options( "-fopt-info-vec-optimized" ) 
+  
 endif()
 
 # set _WIN32_WINNT
