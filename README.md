@@ -5,7 +5,6 @@
 The following architectures are supported:
 - Aarch64
 - ARMv8
-- ARMv7 
 - NVIDIA GPU
 
 # How to build?
