@@ -7,4 +7,4 @@
 * Fernando Pescador
 * Kheyter Chassaigne
 
-* All authors are with Electronic and Microelectronic Design Group (GDEM), part of the CITSEM research center. Universidad Politécnica de Madrid (UPM).
+All authors are with Electronic and Microelectronic Design Group (GDEM), part of the CITSEM research center. Universidad Politécnica de Madrid (UPM).
